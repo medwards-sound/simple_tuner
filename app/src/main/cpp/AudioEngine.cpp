@@ -1,10 +1,4 @@
-/**************************************************************
- * AudioEngine.cpp
- * Michael Edwards - 09.18.2019
- *
- * See header file for details.
- *
- **************************************************************/
+//AudioEngine.cpp, Michael Edwards, 11.19.2019
 
 #include "AudioEngine.h"
 #include <android/log.h>
