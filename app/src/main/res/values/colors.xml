@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">@color/terminalGreen</color>
+    <color name="colorPrimaryDark">@color/terminalGreen</color>
+    <color name="colorAccent">@android:color/white</color>
+    <color name="colorBackground">#2A4F64</color>
+    <color name="terminalGreen">#26C20F</color>
+    <color name="terminalBlue">#2696EF</color>
+    <color name="white">#FFFFFF</color>
+
+</resources>

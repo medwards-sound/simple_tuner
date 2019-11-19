@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name = "tunings_list">
+        <item>"Standard Tuning"</item>
+        <item>"Eb Tuning"</item>
+        <item>"D Tuning"</item>
+        <item>"Drop D Tuning"</item>
+        <item>"Open G Tuning"</item>
+    </array>
+
+    <string name = "Standard_Tuning">E A D G B E</string>
+    <string name = "Eb_Tuning">Eb Ab Db Gb Bb Eb</string>
+    <string name = "D_Tuning">D G C F A D</string>
+    <string name = "Drop_D_Tuning">D A D G B E</string>
+    <string name = "Open_G_Tuning">D G D G B D</string>
+
+
+
+    <string name = "Standard_Tuning_Detail">E2 A2 D3 G3 B3 E4</string>
+    <string name = "Eb_Tuning_Detail">Eb2 Ab2 Db3 Gb3 Bb3 Eb4</string>
+    <string name = "D_Tuning_Detail">D2 G2 C3 F3 A3 D4</string>
+    <string name = "Drop_D_Tuning_Detail">D2 A2 D3 G3 B3 E4</string>
+    <string name = "Open_G_Tuning_Detail">D2 G2 D3 G3 B3 D4</string>
+
+
+</resources>

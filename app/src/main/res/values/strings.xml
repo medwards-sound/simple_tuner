@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Simple Tuner</string>
+    <string name="settings_volume">Volume</string>
+    <string name="settings_duration">Duration</string>
+    <string name="settings_hold_on">Hold On</string>
+    <string name="settings_hold_off">Hold Off</string>
+    <string name="settings_loop_on">Loop On</string>
+    <string name="settings_loop_off">Loop Off</string>
+    <string name="empty" />
+</resources>
