@@ -55,4 +55,11 @@ extern "C"{
 
         return (jfloat) audioEngine->getAnalyzeAudio()->getNoteFreq();
     }
+
+    JNIEXPORT void JNICALL
+    Java_com_example_simple_1tuner_MainActivity_cleanUp(JNIEnv* env, jobject /* this */){
+
+        audioEngine->stop();
+        delete audioEngine;
+    }
 }

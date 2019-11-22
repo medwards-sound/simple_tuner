@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     private native String getNoteQuality();
     private native float getNoteFreq();
     private native void tunerOn(boolean b);
+    private native void cleanUp();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +125,13 @@ public class MainActivity extends AppCompatActivity {
         noteQuality.setText(" ");
 
         getPermissions();
+    }
+
+    @Override
+    protected void onDestroy(){
+
+        cleanUp();
+        super.onDestroy();
     }
 
     //finish main activity creation
