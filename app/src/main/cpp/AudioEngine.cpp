@@ -5,7 +5,6 @@
 #include <thread>
 #include <mutex>
 
-constexpr int32_t kBufferSizeInBursts = 4;
 
 AudioEngine::AudioEngine(){}
 AudioEngine::~AudioEngine() {
@@ -100,7 +99,7 @@ bool AudioEngine::start() {
     }
 
     //set buffer size
-    AAudioStream_setBufferSizeInFrames(stream, AAudioStream_getFramesPerBurst(stream) * kBufferSizeInBursts);
+    AAudioStream_setBufferSizeInFrames(stream, AAudioStream_getFramesPerBurst(stream) * BUFFER_BURST_SIZE);
 
     //start stream
     aaudio_result_t  result_start = AAudioStream_requestStart(stream);
@@ -151,12 +150,6 @@ void AudioEngine::stop() {
         AAudioStream_requestStop(rec_stream);
         AAudioStream_close(rec_stream);
     }
-}
-
-//set audio engine to play audio from oscillator
-void AudioEngine::toneOn(bool on) {
-
-    osc->waveOn(on);
 }
 
 

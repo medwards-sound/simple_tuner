@@ -11,6 +11,7 @@
 #define SIMPLE_TUNER_AUDIOENGINE_H
 
 #include<aaudio/AAudio.h>
+#include <string>
 #include "Oscillator.h"
 #include "AnalyzeAudio.h"
 
@@ -23,7 +24,6 @@ class AudioEngine {
         bool start();
         void stop();
         void restart();
-        void toneOn(bool on);
 
         AnalyzeAudio* getAnalyzeAudio(){ return analyzeAudio; };
         Oscillator* getOscillator() { return osc;};
@@ -35,6 +35,5 @@ class AudioEngine {
         AAudioStream* stream = nullptr;
         AAudioStream* rec_stream = nullptr;
 };
-
 
 #endif //SIMPLE_TUNER_AUDIOENGINE_H

@@ -179,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFinish(){
                 flipImage(-1);
                 waveOn(false);
+                this.cancel();
             }
         };
     }
@@ -260,9 +261,12 @@ public class MainActivity extends AppCompatActivity {
     //note in the currently selected tuning
     public void flipImage(int stringNum){
 
-        //cancel timer
-        if(stringTimer != null)
-           stringTimer.cancel();
+        //need to finish timer
+        if(stringTimer != null) {
+            CountDownTimer temp = stringTimer;
+            stringTimer = null;
+            temp.onFinish();
+        }
 
        // button6.setBackgroundColor(getResources().getColor(R.color.terminalGreen));
         button6.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.terminalGreen));

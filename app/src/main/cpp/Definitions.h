@@ -11,5 +11,6 @@
 #define SAMPLE_LIMIT 48000 //while multiplying this will render a better guess, it is also much slower to process
 #define SAMPLE_RATE 48000 //used for all audio components
 #define TWO_PI (3.14159 * 2)
+#define BUFFER_BURST_SIZE 4
 
 #endif //SIMPLE_TUNER_DEFINITIONS_H

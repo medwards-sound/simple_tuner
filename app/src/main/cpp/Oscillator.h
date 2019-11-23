@@ -20,21 +20,19 @@ class Oscillator {
             amp = 1.0;
             freq = 440.0;
             phase = 0.0;
-            phaseStep = 0.0;
-            alterSampleRate();
+            increment = (TWO_PI * freq) / (double) SAMPLE_RATE;
         }
 
-        void waveOn(bool on);
-        void alterSampleRate();
+        void oscillatorOn(bool on);
         void render(float* data, int32_t frames);
         void alterFreq(float newFreq);
         void fadeOut();
         static void preRender(float* data, float freq, bool phaseShift);
 
     private:
-        std::atomic<bool> waveOn_ {false};
+        std::atomic<bool> playing {false};
         double phase;
-        double phaseStep;
+        double increment;
         float amp;
         float freq;
 };

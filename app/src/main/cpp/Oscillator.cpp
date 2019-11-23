@@ -7,18 +7,12 @@
 void Oscillator::alterFreq(float newFreq){
 
     freq = newFreq;
-    alterSampleRate();
+    increment = (TWO_PI * freq) / (double) SAMPLE_RATE;
 }
 
-//adjust phase step
-void Oscillator::alterSampleRate(){
+void Oscillator::oscillatorOn(bool on){
 
-    phaseStep = (TWO_PI * freq) / (double) SAMPLE_RATE;
-}
-
-void Oscillator::waveOn(bool on){
-
-    waveOn_.store(on);
+    playing.store(on);
 }
 
 void Oscillator::fadeOut() {
@@ -29,18 +23,18 @@ void Oscillator::fadeOut() {
 //render sine wave for streaming playback
 void Oscillator::render(float* data, int32_t frames){
 
-    if(!waveOn_.load())
+    if(!playing.load())
         phase = 0.0;
 
     for(int i = 0; i < frames; i++){
 
-        if(waveOn_.load()){
+        if(playing.load()){
 
             //next sample value
             data[i] = (float) sin(phase) * amp;
 
             //increment phase
-            phase += phaseStep;
+            phase += increment;
 
             //wraparound
             if(phase > TWO_PI)
@@ -56,7 +50,7 @@ void Oscillator::render(float* data, int32_t frames){
 void Oscillator::preRender(float* data, float freq, bool phaseShift){
 
     double localPhase = 0.0;
-    double localPhaseStep = (TWO_PI * freq) / (double) SAMPLE_RATE;
+    double localIncrement = (TWO_PI * freq) / (double) SAMPLE_RATE;
 
     for(int i = 0; i < SAMPLE_LIMIT; i++){
 
@@ -67,7 +61,7 @@ void Oscillator::preRender(float* data, float freq, bool phaseShift){
             data[i] = (float) sin(localPhase) * .3;
 
         //increment position
-        localPhase += localPhaseStep;
+        localPhase += localIncrement;
 
         //wraparound
         if(localPhase > TWO_PI)

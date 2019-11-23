@@ -11,7 +11,7 @@ extern "C"{
     Java_com_example_simple_1tuner_MainActivity_alterFreq(JNIEnv* env, jobject /* this */, jfloat freq){
 
         audioEngine->getOscillator()->alterFreq((float)freq);
-        audioEngine->toneOn(true);
+        audioEngine->getOscillator()->oscillatorOn(true);
     }
 
     JNIEXPORT void JNICALL
@@ -29,7 +29,7 @@ extern "C"{
     JNIEXPORT void JNICALL
     Java_com_example_simple_1tuner_MainActivity_waveOn(JNIEnv* env, jobject /*this */, jboolean on){
 
-        audioEngine->toneOn(on);
+        audioEngine->getOscillator()->oscillatorOn(on);
     }
 
     JNIEXPORT jstring JNICALL
