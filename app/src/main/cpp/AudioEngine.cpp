@@ -8,40 +8,10 @@
 
 AudioEngine::AudioEngine(){}
 AudioEngine::~AudioEngine() {
-    if(osc != nullptr)
-        delete osc;
-    if(analyzeAudio != nullptr)
-        delete analyzeAudio;
 }
 
-aaudio_data_callback_result_t dataCallback
-        (AAudioStream* stream, void* userData, void* audioData, int32_t frames){
 
-    ((Oscillator*) (userData)) -> render(static_cast<float*> (audioData), frames);
-
-    return AAUDIO_CALLBACK_RESULT_CONTINUE;
-}
-
-aaudio_data_callback_result_t recordingDataCallback(
-        AAudioStream* stream,
-        void* userData,
-        void* audioData,
-        int32_t numFrames){
-
-    return ((AudioEngine *) (userData))->recordingCallback(static_cast<float *>(audioData), numFrames);
-}
-
-aaudio_data_callback_result_t AudioEngine::recordingCallback(float* audioData, int32_t numFrames){
-
-    if(!analyzeAudio->isProcessing()){
-
-        analyzeAudio->analyze(audioData, numFrames);
-    }
-
-    return AAUDIO_CALLBACK_RESULT_CONTINUE;
-}
-
-void errorCallback(AAudioStream* stream, void* userData, aaudio_result_t error){
+void AudioEngine::errorCallback(AAudioStream* stream, void* userData, aaudio_result_t error){
 
     if(error == AAUDIO_ERROR_DISCONNECTED){
 
@@ -55,74 +25,25 @@ void errorCallback(AAudioStream* stream, void* userData, aaudio_result_t error){
 //initialize record and playback stream
 bool AudioEngine::start() {
 
-    analyzeAudio = new AnalyzeAudio(); //for audio analysis (tuner)
-    osc = new Oscillator();
+    synthStream = new SynthesisStream();
+    analysisStream = new AnalysisStream();
 
-    //oscillator stream
-    AAudioStreamBuilder* streamBuilder;
-    AAudio_createStreamBuilder(&streamBuilder);
-    AAudioStreamBuilder_setFormat(streamBuilder, AAUDIO_FORMAT_PCM_FLOAT);
-    AAudioStreamBuilder_setChannelCount(streamBuilder, 1);
-    AAudioStreamBuilder_setPerformanceMode(streamBuilder, AAUDIO_PERFORMANCE_MODE_LOW_LATENCY);
-    AAudioStreamBuilder_setSharingMode(streamBuilder, AAUDIO_SHARING_MODE_SHARED);
-    AAudioStreamBuilder_setDataCallback(streamBuilder, ::dataCallback, osc);
-    AAudioStreamBuilder_setErrorCallback(streamBuilder, ::errorCallback, this);
 
-    //record stream
-    AAudioStreamBuilder* recordingBuilder;
-    AAudio_createStreamBuilder(&recordingBuilder);
-    AAudioStreamBuilder_setDirection(recordingBuilder, AAUDIO_DIRECTION_INPUT);
-    AAudioStreamBuilder_setPerformanceMode(recordingBuilder, AAUDIO_PERFORMANCE_MODE_LOW_LATENCY);
-    AAudioStreamBuilder_setSharingMode(recordingBuilder, AAUDIO_SHARING_MODE_SHARED);
-    AAudioStreamBuilder_setFormat(recordingBuilder,AAUDIO_FORMAT_PCM_FLOAT);
-    AAudioStreamBuilder_setChannelCount(recordingBuilder, 1);
-    AAudioStreamBuilder_setSampleRate(recordingBuilder, SAMPLE_RATE);
-    AAudioStreamBuilder_setDataCallback(recordingBuilder, ::recordingDataCallback, this);
-    AAudioStreamBuilder_setErrorCallback(recordingBuilder, ::errorCallback, this);
-
-    //init streams
-    aaudio_result_t result_init = AAudioStreamBuilder_openStream(streamBuilder, &stream);
-    aaudio_result_t rec_result_init = AAudioStreamBuilder_openStream(recordingBuilder, &rec_stream);
-
-    if(result_init != AAUDIO_OK){
-
-        __android_log_print(ANDROID_LOG_ERROR, "AudioEngine", "Error init stream %s", AAudio_convertResultToText(result_init));
-
+    if(!synthStream->initStream())
         return false;
-    }
-
-    if(rec_result_init != AAUDIO_OK){
-
-        __android_log_print(ANDROID_LOG_ERROR, "AudioEngine", "Error init stream RECORDING %s", AAudio_convertResultToText(rec_result_init));
-
+    if(!analysisStream->initStream())
         return false;
-    }
-
-    //set buffer size
-    AAudioStream_setBufferSizeInFrames(stream, AAudioStream_getFramesPerBurst(stream) * BUFFER_BURST_SIZE);
-
-    //start stream
-    aaudio_result_t  result_start = AAudioStream_requestStart(stream);
-    aaudio_result_t  rec_result_start = AAudioStream_requestStart(rec_stream);
-
-    if(result_start != AAUDIO_OK){
-
-        __android_log_print(ANDROID_LOG_ERROR, "AudioEngine", "Error starting stream %s", AAudio_convertResultToText(result_start));
-
+    if(!synthStream->startStream())
         return false;
-    }
-
-    if(rec_result_start != AAUDIO_OK){
-
-        __android_log_print(ANDROID_LOG_ERROR, "AudioEngine", "Error starting stream %s", AAudio_convertResultToText(rec_result_start));
-
+    if(!analysisStream->startStream())
         return false;
-    }
 
-    AAudioStreamBuilder_delete(streamBuilder);
-    AAudioStreamBuilder_delete(recordingBuilder);
 
     return true;
+}
+
+void AudioEngine::logEngineError(aaudio_result_t r){
+    __android_log_print(ANDROID_LOG_ERROR, "AudioEngine", "Error starting stream %s", AAudio_convertResultToText(r));
 }
 
 void AudioEngine::restart() {
@@ -139,16 +60,16 @@ void AudioEngine::restart() {
 
 void AudioEngine::stop() {
 
-    if(stream != nullptr){
+    if(synthStream != nullptr){
 
-        AAudioStream_requestStop(stream);
-        AAudioStream_close(stream);
+        AAudioStream_requestStop(synthStream->getStream());
+        AAudioStream_close(synthStream->getStream());
     }
 
-  if(rec_stream != nullptr){
+  if(analysisStream != nullptr){
 
-        AAudioStream_requestStop(rec_stream);
-        AAudioStream_close(rec_stream);
+        AAudioStream_requestStop(analysisStream->getStream());
+        AAudioStream_close(analysisStream->getStream());
     }
 }
 

@@ -12,8 +12,9 @@
 
 #include<aaudio/AAudio.h>
 #include <string>
-#include "Oscillator.h"
-#include "AnalyzeAudio.h"
+#include "AudioStream.h"
+#include "SynthesisStream.h"
+#include "AnalysisStream.h"
 
 class AudioEngine {
 
@@ -25,15 +26,15 @@ class AudioEngine {
         void stop();
         void restart();
 
-        AnalyzeAudio* getAnalyzeAudio(){ return analyzeAudio; };
-        Oscillator* getOscillator() { return osc;};
-        aaudio_data_callback_result_t recordingCallback(float* audioData, int32_t numFrames);
+        static void errorCallback(AAudioStream* stream, void* userData, aaudio_result_t error);
+        static void logEngineError(aaudio_result_t r);
+
+        SynthesisStream* getSynthStream(){return synthStream;};
+        AnalysisStream* getAnalysisStream(){return analysisStream;};
 
     private:
-        Oscillator* osc = nullptr;
-        AnalyzeAudio* analyzeAudio = nullptr;
-        AAudioStream* stream = nullptr;
-        AAudioStream* rec_stream = nullptr;
+        SynthesisStream* synthStream = nullptr;
+        AnalysisStream* analysisStream = nullptr;
 };
 
 #endif //SIMPLE_TUNER_AUDIOENGINE_H

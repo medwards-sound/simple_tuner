@@ -21,6 +21,9 @@ add_library( # Sets the name of the library.
         NoteMap.cpp
         Oscillator.cpp
         AudioEngine.cpp
+        AudioStream.cpp
+        AnalysisStream.cpp
+        SynthesisStream.cpp
         AnalyzeAudio.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
