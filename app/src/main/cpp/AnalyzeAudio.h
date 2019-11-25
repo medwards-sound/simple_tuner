@@ -5,8 +5,7 @@
  * AnalyzeAudio will analyze a waveform in order to determine
  * what pitch is being played into microphone.
  *
- * The algorithm used to match pitch is inspired by the method
- * used by Jonathan Bergknoff seen here:
+ * The algorithm used to match pitch is inspired by the method seen here:
  * https://github.com/jbergknoff/guitar-tuner
  *
  * Before any processing occurs, an array of NoteMap is generated to hold
