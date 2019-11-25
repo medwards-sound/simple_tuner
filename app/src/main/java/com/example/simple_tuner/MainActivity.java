@@ -229,8 +229,9 @@ public class MainActivity extends AppCompatActivity {
                         autoMode = true;
                         tunerToggle.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.terminalBlue));
                         if(stringTimer != null) {
-                            stringTimer.onFinish();
-                            stringTimer.cancel();
+                            CountDownTimer temp = stringTimer;
+                            stringTimer = null;
+                            temp.onFinish();
                         }
 
                         tunerTimer = newCountdownTuner();
