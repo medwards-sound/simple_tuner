@@ -1,14 +1,14 @@
-//
 // Created by Michael Edwards on 11/24/2019.
-//
 
 #include "AnalysisStream.h"
 
+//AAudio callback, then calls self for analysis
 aaudio_data_callback_result_t  AnalysisStream::analysisCallback(AAudioStream* stream, void* userData, void* audioData, int32_t frames){
 
     return ((AnalysisStream*)(userData))->analysis(static_cast<float*>(audioData), frames);
 }
 
+//tell analyze audio to analyze current input
 aaudio_data_callback_result_t  AnalysisStream::analysis(float* audioData, int32_t frames){
 
     if(!analyzeAudio->isProcessing()){
@@ -31,6 +31,7 @@ AnalysisStream::AnalysisStream() {
 
 AnalysisStream::~AnalysisStream() {
 
+    delete analyzeAudio;
 }
 
 

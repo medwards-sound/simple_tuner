@@ -12,8 +12,6 @@ extern "C"{
 
         audioEngine->getSynthStream()->getOscillator()->alterFreq((float)freq);
         audioEngine->getSynthStream()->getOscillator()->oscillatorOn(true);
-       // audioEngine->getOscillator()->alterFreq((float)freq);
-        //audioEngine->getOscillator()->oscillatorOn(true);
     }
 
     JNIEXPORT void JNICALL

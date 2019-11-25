@@ -1,6 +1,13 @@
-//
-// Created by Michael Edwards on 11/24/2019.
-//
+/*****************************************************************************
+ * AnalysisStream.h
+ * Michael Edwards - 11.24.2019
+ *
+ * AnalysisStream inherits from AudioStream. Used to build and alter
+ * an AAudio stream.
+ *
+ * Intended for use with the analysis portion of the tuner. Takes microphone
+ * input and callback triggers analysis.
+ *****************************************************************************/
 
 #ifndef SIMPLE_TUNER_ANALYSISSTREAM_H
 #define SIMPLE_TUNER_ANALYSISSTREAM_H

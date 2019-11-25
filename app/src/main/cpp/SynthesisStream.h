@@ -1,6 +1,12 @@
-//
-// Created by Michael Edwards on 11/24/2019.
-//
+/**********************************************************************
+ * SynthesisStream.h
+ * Michael Edwards - 11.24.2019
+ *
+ * SynthesisStream inherits from audio stream and may be called
+ * by AudioEngine to build and alter an AAudio stream.
+ *
+ * Intended for use with Oscillator to generate sine waves.
+ **********************************************************************/
 
 #ifndef SIMPLE_TUNER_SYNTHESISSTREAM_H
 #define SIMPLE_TUNER_SYNTHESISSTREAM_H

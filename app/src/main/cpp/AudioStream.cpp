@@ -1,11 +1,9 @@
-//
 // Created by Michael Edwards on 11/23/2019.
-//
 
 #include "AudioStream.h"
+
 AudioStream::AudioStream(){
     stream = nullptr;
-    status = STOPPED;
     AAudio_createStreamBuilder(&builder);
     AAudioStreamBuilder_setFormat(builder, AAUDIO_FORMAT_PCM_FLOAT);
     AAudioStreamBuilder_setChannelCount(builder, 1);
@@ -16,16 +14,8 @@ AudioStream::AudioStream(){
 
 AudioStream::~AudioStream() {}
 
-StreamStatus AudioStream::getStreamStatus() {
 
-    return status;
-}
-
-void AudioStream::setStreamStatus(StreamStatus s) {
-
-        status = s;
-}
-
+//initialize the stream
 bool AudioStream::initStream(){
 
     aaudio_result_t r = AAudioStreamBuilder_openStream(builder, &stream);
@@ -37,9 +27,9 @@ bool AudioStream::initStream(){
         //ADD ERROR LOGGING
         return false;
     }
-
 }
 
+//start the stream
 bool AudioStream::startStream() {
 
     aaudio_result_t r = AAudioStream_requestStart(stream);
@@ -51,9 +41,14 @@ bool AudioStream::startStream() {
         //ADD ERROR LOGGING
         return false;
     }
-
 }
 
+void AudioStream::cleanup() {
+
+    AAudioStreamBuilder_delete(builder);
+}
+
+//getter: stream
 AAudioStream* AudioStream::getStream(){
 
     return stream;

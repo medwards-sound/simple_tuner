@@ -7,33 +7,30 @@
 
 #include<aaudio/AAudio.h>
 #include "Definitions.h"
-//#include "AudioEngine.h"
 #include<string>
 
-enum StreamStatus{ WORKING, STOPPED};
-enum STREAM_TYPE{ ANALYSIS, SYNTHESIS};
+//enum StreamStatus{ WORKING, STOPPED};
 
 class AudioStream {
 
     public:
         AudioStream();
         ~AudioStream();
-        StreamStatus getStreamStatus();
+        //StreamStatus getStreamStatus();
         AAudioStream* getStream();
-        void setStreamStatus(StreamStatus s);
+        //void setStreamStatus(StreamStatus s);
         bool initStream();
         virtual bool startStream();
+        void cleanup();
 
 
     protected:
         AAudioStreamBuilder* builder;
         AAudioStream* stream;
-    private:
 
-        StreamStatus status;
+    //private:
+        //StreamStatus status;
 
-        void createRecordingStream();
-        void createOscillatorStream();
 
 
 };

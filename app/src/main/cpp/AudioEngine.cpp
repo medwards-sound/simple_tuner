@@ -6,8 +6,17 @@
 #include <mutex>
 
 
-AudioEngine::AudioEngine(){}
+AudioEngine::AudioEngine(){
+
+
+}
 AudioEngine::~AudioEngine() {
+
+    if(synthStream != nullptr)
+        delete synthStream;
+
+    if(analysisStream != nullptr)
+        delete analysisStream;
 }
 
 
@@ -28,18 +37,22 @@ bool AudioEngine::start() {
     synthStream = new SynthesisStream();
     analysisStream = new AnalysisStream();
 
-
+    //init stream or fail to start engine
     if(!synthStream->initStream())
         return false;
     if(!analysisStream->initStream())
         return false;
+
+    //start stream or fail to start engine
     if(!synthStream->startStream())
         return false;
     if(!analysisStream->startStream())
         return false;
 
+    synthStream->cleanup();
+    analysisStream->cleanup();
 
-    return true;
+    return true; //engine started
 }
 
 void AudioEngine::logEngineError(aaudio_result_t r){
@@ -64,13 +77,19 @@ void AudioEngine::stop() {
 
         AAudioStream_requestStop(synthStream->getStream());
         AAudioStream_close(synthStream->getStream());
+        delete synthStream;
+        synthStream = nullptr;
     }
 
   if(analysisStream != nullptr){
 
         AAudioStream_requestStop(analysisStream->getStream());
         AAudioStream_close(analysisStream->getStream());
+        delete analysisStream;
+        analysisStream = nullptr;
     }
+
+
 }
 
 
