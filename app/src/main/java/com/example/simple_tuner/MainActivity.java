@@ -1,26 +1,21 @@
 /****************************************************************************************************
- * MainActivity.java - Simple Tuner App - Initial Version
- * Michael Edwards 11.19.2019
+ * MainActivity.java - Simple Tuner App - Simplified Version
+ * Michael Edwards 08.12.2020
  *
- * This java file holds all UI code for Simple Tuner App
+ * This java file holds all UI code for Simple Tuner app
  * Audio playback and analysis is achieved using c++ code and the AAudio high performance API for
  * Android.(see cmake for more details)
  * jni-bridge.cpp allows communication between native code and ui.
- * Guitar tunings are held in tunings.xml
  *
- * This App is intended as a simple guitar tuner, with a manual as well as auto mode.
+ * This app is intended as a simple guitar tuner.
  * App allows user to select desired guitar tuning using spinner.
- *
- * Auto mode: allows user to tune the guitar from microphone, highlights when note is locked in.
- * Manual mode: allows user to play sine waves of selected note.
- *
+ * When sound enters the microphone, the app indicates whether note is sharp or flat
+ * and highlights the corresponding string when note is locked in.
  *
  * NOTE: The algorithm used to find note matches struggles a bit with overtones on low notes.
  * A better reading will occur later in the sound envelope of the string.
  *
  ***************************************************************************************************/
-
-
 package com.example.simple_tuner;
 
 import android.Manifest;
@@ -30,10 +25,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -50,22 +43,18 @@ public class MainActivity extends AppCompatActivity {
     private static final float
         D2 = 73.42f, E2 = 82.41f, G2 = 98.0f, A2 = 110.0f, C3 = 130.81f, D3 = 146.83f, F3 = 174.61f, G3 = 196.0f, A3 = 220.0f,
         B3 = 245.94f, D4 = 293.66f, E4 = 329.63f, Ab2 = 103.83f, Bb3 = 233.08f, Db3 = 138.59f, Eb2 = 77.78f, Eb4 = 311.13f, Gb3 = 185.0f;
-
     private Map<String,float[]> tuningMap;
-    //ui
     private TextView note;
     private TextView noteQuality;
     private Spinner tunings;
     ImageView guitarImage;
     private ToggleButton tunerToggle;
-    //timer
     private CountDownTimer tunerTimer; //since timer can't update ui and countdown timer can, this just restarts itself
     private CountDownTimer stringTimer;
 
     //load native libraries (see cmake for details)
     static{
         System.loadLibrary("native-lib");
-
     }
 
     //for use with jni bridge
@@ -101,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
         guitarImage = findViewById(R.id.image_guitar); //center image
         tunerToggle.setOnCheckedChangeListener(toggleChange);
         tunings.setOnItemSelectedListener(ItemChange); //spinner selection listener
-
         stringTimer = null;
         tunerTimer = null;
         note.setText("--");
@@ -148,28 +136,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-    /*
-    //returns CountDownTimer set roughly to duration of string note
-    private CountDownTimer newCountdown(){
-        return new CountDownTimer(9000,9000){
-            public void onTick(long msToFinish){ }
 
-            //flip image to all green strings
-            public void onFinish(){
-                flipImage(-1);
-                waveOn(false);
-                this.cancel();
-            }
-        };
-    }*/
-
-    //returns CountDownTimer that allows polling of tuning data when in auto mode
+    //returns CountDownTimer that allows polling of tuning data
     private CountDownTimer newCountdownTuner(){
         return new CountDownTimer(1000,70){
             public void onTick(long msToFinish){
                 note.setText(getNote());
                 noteQuality.setText(getNoteQuality());
-
                 guitarImage.setImageResource(R.drawable.guitarspritegreen);guitarImage.setImageResource(R.drawable.guitarspritegreen);
 
                 if(!getNoteQuality().equals(" ")) return;
@@ -232,12 +205,11 @@ public class MainActivity extends AppCompatActivity {
         playSound(!tunerOn);
     }
 
-    //toggle button that turns auto mode on or off
+    //toggle button that turns A440 playback on or off
     private CompoundButton.OnCheckedChangeListener toggleChange =
             new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-
                     changeTunerState(!b);
                 }
     };
@@ -259,7 +231,6 @@ public class MainActivity extends AppCompatActivity {
 
         //get String, split on space to get all note String values
         String[] splitStr2 = getResources().getString(assetNum).split("\\s");
-
         currTuning = tuningName; //set current tuning
         guitarImage.setImageResource(R.drawable.guitarspritegreen); //turn off highlighting for old tuning
     }
