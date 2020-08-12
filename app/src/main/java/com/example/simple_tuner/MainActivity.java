@@ -13,7 +13,8 @@
  * and highlights the corresponding string when note is locked in.
  *
  * NOTE: The algorithm used to find note matches struggles a bit with overtones on low notes.
- * A better reading will occur later in the sound envelope of the string.
+ * A better reading will occur later in the sound envelope of the guitar string.
+ * Emulator requires "virtual microphone uses host audio input" to be enabled in settings.
  *
  ***************************************************************************************************/
 package com.example.simple_tuner;
