@@ -17,18 +17,14 @@
 #include "AnalysisStream.h"
 
 class AudioEngine {
-
     public:
         AudioEngine();
         ~AudioEngine();
-
         bool start();
         void stop();
         void restart();
-
         static void errorCallback(AAudioStream* stream, void* userData, aaudio_result_t error);
         static void logEngineError(aaudio_result_t r);
-
         SynthesisStream* getSynthStream(){return synthStream;};
         AnalysisStream* getAnalysisStream(){return analysisStream;};
 

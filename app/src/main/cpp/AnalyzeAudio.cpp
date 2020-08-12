@@ -15,21 +15,15 @@ AnalyzeAudio::AnalyzeAudio() {
 }
 
 AnalyzeAudio::~AnalyzeAudio() {
-
     delete[] noteMap;
-
 }
 
 void AnalyzeAudio::generateReverseNotes() {
-
-    for(auto n : notes){
-
+    for(auto n : notes)
         notesReverse[n.second] = n.first;
-    }
 }
 
 float AnalyzeAudio::getNoteFreq() {
-
     if(currNote != "--")
         return notes.at(currNote);
     else
@@ -37,7 +31,6 @@ float AnalyzeAudio::getNoteFreq() {
 }
 
 std::string AnalyzeAudio::getCurrNote(){
-
     return currNote;
 }
 
@@ -45,22 +38,17 @@ std::string AnalyzeAudio::getCurrNote(){
 std::string AnalyzeAudio::getQuality(){
 
     switch(currQuality){
-
         case 0: return "FLAT";
-
         case 2: return "SHARP";
-
         default: return " ";
     }
 }
 
 //create all waveforms to compare to buffer
 void AnalyzeAudio::generateComparators(){
-
     noteMap = new NoteMap[notes.size()];
     int ct = 0;
     for(auto n : notes){
-
         NoteMap* nm = new NoteMap(n.first,n.second);
         noteMap[ct] = *nm;
         ct++;
@@ -69,19 +57,17 @@ void AnalyzeAudio::generateComparators(){
 
 //fill buffer from microphone, then find fundamental note
 int32_t AnalyzeAudio::analyze(float* data, int32_t sampleCount){
-
     if(processing || !tunerOn) {
         bufferIndex = 0;
         return sampleCount;
     }
 
     for(int i = 0; i < sampleCount; i++) {
-
         if(!isBufferFull())
             buffer[bufferIndex++] = data[i];
         else
             break;
-        }
+    }
 
     if(isBufferFull()){
         processing = true;
@@ -99,7 +85,6 @@ void AnalyzeAudio::findFundamental() {
     float stringsInPhase[noteCt][3] = {0};
     float stringsOutPhase[noteCt][3] = {0};
     float magnitudes[noteCt][3] = {0};
-
     float max = -1;
     int maxLoc = -1;
     float avg = 0;
@@ -125,14 +110,11 @@ void AnalyzeAudio::findFundamental() {
         magnitudes[m][2] = sqrtf((stringsInPhase[m][2] * stringsInPhase[m][2]) + (stringsOutPhase[m][2] * stringsOutPhase[m][2]));
 
         for(int n = 0; n < 3; n++){
-
             if(magnitudes[m][n] > max) {
-
                 max = magnitudes[m][n];
                 maxLoc = m;
                 maxQuality = n;
             }
-
             avg += magnitudes[m][n];
         }
     }
@@ -143,7 +125,6 @@ void AnalyzeAudio::findFundamental() {
     //add confidence
 
    if(guessMax > threshold){
-
            currNote = noteMap[maxLoc].getName();
            currQuality = maxQuality;
    }

@@ -78,13 +78,10 @@ const std::unordered_map<std::string, float> notes{
 
 const int noteCt = 29;
 
-
 class AnalyzeAudio {
-
     public:
         AnalyzeAudio();
         ~AnalyzeAudio();
-
         int32_t analyze(float* data, int32_t sampleCount);
         std::string getCurrNote();
         bool isBufferFull(){return buffer.size() - 1 == bufferIndex;};
@@ -99,12 +96,9 @@ class AnalyzeAudio {
         int bufferIndex;
         std::string currNote;
         int currQuality;
-
         std::unordered_map<float, std::string> notesReverse;
         std::array<float, SAMPLE_LIMIT> buffer {0};
-
         NoteMap* noteMap;
-
         void findFundamental();
         void generateComparators();
         void generateReverseNotes();

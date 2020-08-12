@@ -5,25 +5,17 @@
 #include <thread>
 #include <mutex>
 
+AudioEngine::AudioEngine(){}
 
-AudioEngine::AudioEngine(){
-
-
-}
 AudioEngine::~AudioEngine() {
-
     if(synthStream != nullptr)
         delete synthStream;
-
     if(analysisStream != nullptr)
         delete analysisStream;
 }
 
-
 void AudioEngine::errorCallback(AAudioStream* stream, void* userData, aaudio_result_t error){
-
     if(error == AAUDIO_ERROR_DISCONNECTED){
-
         std::function<void(void)> restartFunction =
                 std::bind(&AudioEngine::restart, static_cast<AudioEngine*> (userData));
 
@@ -33,7 +25,6 @@ void AudioEngine::errorCallback(AAudioStream* stream, void* userData, aaudio_res
 
 //initialize record and playback stream
 bool AudioEngine::start() {
-
     synthStream = new SynthesisStream();
     analysisStream = new AnalysisStream();
 
@@ -60,7 +51,6 @@ void AudioEngine::logEngineError(aaudio_result_t r){
 }
 
 void AudioEngine::restart() {
-
     static std::mutex restartingLock;
 
     if(restartingLock.try_lock()){
@@ -72,7 +62,6 @@ void AudioEngine::restart() {
 }
 
 void AudioEngine::stop() {
-
     if(synthStream != nullptr){
 
         AAudioStream_requestStop(synthStream->getStream());
@@ -88,8 +77,6 @@ void AudioEngine::stop() {
         delete analysisStream;
         analysisStream = nullptr;
     }
-
-
 }
 
 

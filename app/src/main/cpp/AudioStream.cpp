@@ -14,7 +14,6 @@ AudioStream::AudioStream(){
 
 AudioStream::~AudioStream() {}
 
-
 //initialize the stream
 bool AudioStream::initStream(){
 
@@ -23,7 +22,6 @@ bool AudioStream::initStream(){
     if(r == AAUDIO_OK)
         return true;
     else{
-
         //ADD ERROR LOGGING
         return false;
     }
@@ -37,19 +35,16 @@ bool AudioStream::startStream() {
     if(r == AAUDIO_OK)
         return true;
     else{
-
         //ADD ERROR LOGGING
         return false;
     }
 }
 
 void AudioStream::cleanup() {
-
     AAudioStreamBuilder_delete(builder);
 }
 
 //getter: stream
 AAudioStream* AudioStream::getStream(){
-
     return stream;
 }

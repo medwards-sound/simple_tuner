@@ -18,9 +18,7 @@
 #include "Definitions.h"
 
 class NoteMap {
-
     public:
-
         NoteMap();
         NoteMap(std::string name, float freq);
         ~NoteMap();
@@ -35,17 +33,13 @@ class NoteMap {
 
     private:
         void generate(float freq);
-
         float baseNoteInPhase[SAMPLE_LIMIT];
         float lowNoteInPhase[SAMPLE_LIMIT];
         float highNoteInPhase[SAMPLE_LIMIT];
-
         float baseNoteOutPhase[SAMPLE_LIMIT];
         float lowNoteOutPhase[SAMPLE_LIMIT];
         float highNoteOutPhase[SAMPLE_LIMIT];
-
         std::string noteName = "";
 };
-
 
 #endif //SIMPLE_TUNER_NOTEMAP_H

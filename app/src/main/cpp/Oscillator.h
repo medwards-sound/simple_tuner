@@ -14,7 +14,6 @@
 #include <array>
 
 class Oscillator {
-
     public:
         Oscillator(){
             amp = 1.0;

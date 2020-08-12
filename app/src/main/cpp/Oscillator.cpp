@@ -5,29 +5,24 @@
 
 //change frequency
 void Oscillator::alterFreq(float newFreq){
-
     freq = newFreq;
     increment = (TWO_PI * freq) / (double) SAMPLE_RATE;
 }
 
 void Oscillator::oscillatorOn(bool on){
-
     playing.store(on);
 }
 
 void Oscillator::fadeOut() {
-
     //add in future
 }
 
 //render sine wave for streaming playback
 void Oscillator::render(float* data, int32_t frames){
-
     if(!playing.load())
         phase = 0.0;
 
     for(int i = 0; i < frames; i++){
-
         if(playing.load()){
 
             //next sample value
@@ -48,7 +43,6 @@ void Oscillator::render(float* data, int32_t frames){
 
 //create and store sine wave in array
 void Oscillator::preRender(float* data, float freq, bool phaseShift){
-
     double localPhase = 0.0;
     double localIncrement = (TWO_PI * freq) / (double) SAMPLE_RATE;
 

@@ -12,7 +12,6 @@
 //enum StreamStatus{ WORKING, STOPPED};
 
 class AudioStream {
-
     public:
         AudioStream();
         ~AudioStream();
@@ -23,16 +22,12 @@ class AudioStream {
         virtual bool startStream();
         void cleanup();
 
-
     protected:
         AAudioStreamBuilder* builder;
         AAudioStream* stream;
 
     //private:
         //StreamStatus status;
-
-
-
 };
 
 

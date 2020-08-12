@@ -17,21 +17,15 @@
 #include "AudioStream.h"
 
 class SynthesisStream : public AudioStream{
-
     public:
         SynthesisStream();
         ~SynthesisStream();
-
         bool startStream() override;
-
         Oscillator* getOscillator(){ return oscillator;};
         static aaudio_data_callback_result_t synthCallback(AAudioStream* stream, void* userData, void* audioData, int32_t frames);
 
-
     private:
         Oscillator* oscillator;
-
-
 };
 
 
