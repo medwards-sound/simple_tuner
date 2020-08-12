@@ -2,9 +2,8 @@
 
 ![screenshot](screenshots/simple_tuner_screenshot.png)<br />
 
-Simple tuner app for guitar.
-Utilizes AAudio high performance audio API for Android.
-Will only run on Android 8 and higher.
+Simple Tuner is a simple Android app for guitar tuning.
+It utilizes AAudio high performance audio API for Android (will only run on Android 8 and higher).
 
 The tuner will identify a note being played into the microphone and highlight the corresponding
 guitar string if it matches a note within the user selected tuning. Additionally, the app allows
